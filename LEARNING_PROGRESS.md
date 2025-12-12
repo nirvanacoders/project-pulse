@@ -76,28 +76,41 @@ Building a project/activity tracker to learn Angular 15 from fundamentals to adv
 
 ---
 
-### 🔄 Session 3: RxJS I - Observables & Async (IN PROGRESS)
+### ✅ Session 3: RxJS I - Observables & Async (COMPLETED)
 **Topics:** Observables, Subjects, operators, async pipe
 - Converting synchronous service to Observable pattern
 - Understanding Observable lifecycle (subscribe/unsubscribe)
 - Using `of` to create Observables
 - `async` pipe for automatic subscription management
-- Core operators: `map`, `filter`, `debounceTime`, `switchMap`
+- Core operators: `map`, `debounceTime`, `distinctUntilChanged`, `switchMap`, `startWith`
 - Implementing reactive search/filter
 
-**Next Steps:**
-1. Update `ProjectService.getAll()` to return `Observable<Project[]>`
-2. Convert `ListComponent` to use `async` pipe
-3. Add search input with `Subject`
-4. Apply debouncing and filtering operators
-5. Handle loading and error states
+**Completed:**
+- Updated `ProjectService.getAll()` to return `Observable<Project[]>` using `of()`
+- Converted `ListComponent` to use `async` pipe (no manual subscribe)
+- Added search input with `Subject<string>` to capture user input
+- Implemented reactive search pipeline with RxJS operators:
+  - `startWith('')` - Show all projects initially
+  - `debounceTime(300)` - Wait 300ms after typing stops
+  - `distinctUntilChanged()` - Skip duplicate search terms
+  - `switchMap()` - Cancel previous search, start new one
+  - `map()` - Filter projects by name and tags
+- Created comprehensive component documentation in `README.md`
 
-**Concepts to Cover:**
-- Hot vs Cold Observables
-- Subject, BehaviorSubject, ReplaySubject
-- Subscription management
-- Operator chaining with `pipe()`
-- Error handling with `catchError`
+**Files Created/Modified:**
+- `src/app/services/project.service.ts` (converted to Observable)
+- `src/app/projects/list/list.component.ts` (reactive search)
+- `src/app/projects/list/list.component.html` (search input + async pipe)
+- `src/app/projects/list/README.md` (detailed documentation)
+
+**Key Learnings:**
+- Observables are lazy - nothing happens until subscription
+- `Subject` allows manual value emission via `.next()`
+- `async` pipe auto-subscribes/unsubscribes (prevents memory leaks)
+- `debounceTime` prevents excessive operations while typing
+- `switchMap` cancels previous observables (critical for HTTP)
+- `$` naming convention for Observable variables
+- Reactive patterns scale from local filtering to HTTP calls
 
 ---
 

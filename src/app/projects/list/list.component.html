@@ -1,10 +1,19 @@
 <section class="projects">
   <h2>Projects</h2>
 
-  <p *ngIf="projects.length === 0">No Projects found!</p>
+  <div class="search-box" style="margin-bottom: 1rem;">
+    <input 
+      type="text" 
+      placeholder="Search projects or tags..." 
+      style="padding: 0.5rem; width: 100%; max-width: 400px;"
+      (input)="onSearchChange($any($event.target).value)"
+    />
+  </div>
+
+  <p *ngIf="(projects$ | async)?.length === 0">No projects found.</p>
 
   <ul>
-    <li *ngFor="let p of projects; trackBy: trackById">
+    <li *ngFor="let p of projects$ | async; trackBy: trackById">
       <strong>{{ p.name }}</strong>
       <span> — {{ p.tags.join(', ') }}</span>
     </li>
