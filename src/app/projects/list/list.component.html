@@ -1,0 +1,12 @@
+<section class="projects">
+  <h2>Projects</h2>
+
+  <p *ngIf="projects.length === 0">No Projects found!</p>
+
+  <ul>
+    <li *ngFor="let p of projects; trackBy: trackById">
+      <strong>{{ p.name }}</strong>
+      <span> — {{ p.tags.join(', ') }}</span>
+    </li>
+  </ul>
+</section>
