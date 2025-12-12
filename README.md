@@ -4,25 +4,129 @@ This repo will host a guided, project-based Angular 15 learning path. We'll buil
 
 ## Quick Reference: Git & SSH Commands
 
-### SSH Setup
-```bash
-# Generate SSH key (if you don't have one)
-ssh-keygen -t ed25519 -C "your_email@example.com"
+### Initial Setup
 
-# Start SSH agent
+#### 1. Install Git (macOS)
+```bash
+# Check if Git is installed
+git --version
+
+# Install via Homebrew (if not installed)
+brew install git
+
+# Verify installation
+git --version
+```
+
+#### 2. Install GitHub CLI (optional but recommended)
+```bash
+# Install via Homebrew
+brew install gh
+
+# Verify installation
+gh --version
+```
+
+#### 3. Configure Git Identity
+```bash
+# Set your name and email globally
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+
+# Verify configuration
+git config --global --list | grep user
+
+# Check current repo config (local)
+git config user.name
+git config user.email
+```
+
+### SSH Setup for GitHub
+
+#### Step 1: Generate SSH Key
+```bash
+# Generate new SSH key (ed25519 is recommended)
+ssh-keygen -t ed25519 -C "your.email@example.com"
+
+# Press Enter to accept default file location (~/.ssh/id_ed25519)
+# Enter a passphrase (recommended) or press Enter for none
+
+# For older systems that don't support ed25519, use RSA:
+ssh-keygen -t rsa -b 4096 -C "your.email@example.com"
+```
+
+#### Step 2: Start SSH Agent
+```bash
+# Start the SSH agent in the background
 eval "$(ssh-agent -s)"
 
-# Add SSH key to agent
+# Should output: Agent pid [number]
+```
+
+#### Step 3: Add SSH Key to Agent
+```bash
+# Add your SSH private key to the ssh-agent
 ssh-add ~/.ssh/id_ed25519
 
-# Copy public key (add to GitHub: https://github.com/settings/keys)
+# For RSA key:
+ssh-add ~/.ssh/id_rsa
+
+# macOS: Add to keychain to persist across reboots
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+```
+
+#### Step 4: Add SSH Key to GitHub
+```bash
+# Copy public key to clipboard (macOS)
 cat ~/.ssh/id_ed25519.pub | pbcopy
 
-# Test GitHub connection
+# Or display it to copy manually
+cat ~/.ssh/id_ed25519.pub
+
+# Then:
+# 1. Go to https://github.com/settings/keys
+# 2. Click "New SSH key"
+# 3. Title: "My MacBook" (or descriptive name)
+# 4. Paste the key
+# 5. Click "Add SSH key"
+```
+
+#### Step 5: Test SSH Connection
+```bash
+# Test your SSH connection to GitHub
 ssh -T git@github.com
 
-# Add to macOS keychain (optional, avoids re-entering passphrase)
-ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+# Expected output:
+# Hi username! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+#### Step 6: Configure SSH Config (Optional)
+```bash
+# Create or edit SSH config file
+nano ~/.ssh/config
+
+# Add these lines:
+Host github.com
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_ed25519
+
+# Save and exit (Ctrl+X, Y, Enter)
+```
+
+### GitHub CLI Authentication
+```bash
+# Authenticate with GitHub
+gh auth login
+
+# Follow prompts:
+# - Choose "GitHub.com"
+# - Choose "SSH" 
+# - Select your SSH key
+# - Authenticate via browser
+
+# Verify authentication
+gh auth status
 ```
 
 ### Git Basic Commands
